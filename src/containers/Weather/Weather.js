@@ -13,21 +13,22 @@ export default class Weather extends Component {
   }
 
   handleSubmit = (zip) => {
-    console.log(zip);
     const xmlHttp = new XMLHttpRequest();
-    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-      const temp = JSON.parse(xmlHttp.responseText).main.temp;
-      this.setState({ temp: temp });
-    }
+    xmlHttp.onreadystatechange = () => {
+      if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+        const temp = JSON.parse(xmlHttp.responseText).main.temp;
+        this.setState({ temp: temp });
+      }
+    };
     xmlHttp.open('GET',
-      `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&&APPID=5721bc15da4329b05a39030e3cef15a1`, true);
+      `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&&APPID=39984af74b5ae11f522f6e2b8be1e6b0`, true);
     xmlHttp.send(null);
   }
 
   renderTemp() {
     return (
       <div>
-        It is {this.state.temp} degrees outside.
+        It is {Math.floor(this.state.temp * 9 / 5 - 459.67)} degrees outside.
       </div>
     );
   }
