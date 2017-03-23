@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 
 class Weather extends Component {
   static propTypes = {
-    handleSubmit: PropTypes.func
+    onSubmit: PropTypes.func
   }
 
   constructor(props) {
@@ -11,19 +11,23 @@ class Weather extends Component {
     this.state = { zip: '' };
   }
 
-  updateInput() {
-    return (evt) => {
-      this.setState({ zip: evt.target.value });
-    };
+  updateInput(evt) {
+    evt.preventDefault();
+    this.setState({ zip: evt.target.value });
+  }
+
+  handleSubmit(evt) {
+    evt.preventDefault();
+    this.props.onSubmit(this.state.zip);
   }
 
   render() {
     return (
-      <form>
+      <div>
         Enter your Zip Code...
-        <input onChange={this.updateInput()}></input>
-        <button onClick={() => this.props.handleSubmit()}>Submit</button>
-      </form>
+        <input onChange={evt => this.updateInput(evt)} value={this.state.zip}></input>
+        <button onClick={evt => this.handleSubmit(evt)}>Submit</button>
+      </div>
     );
   }
 }
